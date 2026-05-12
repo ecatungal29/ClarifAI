@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
             reasoning: 'API error after retries',
           })
         } else {
-          await new Promise(r => setTimeout(r, Math.pow(2, attempt) * 500))
+          await new Promise(r => setTimeout(r, Math.pow(2, attempt - 1) * 500))
         }
       }
     }
