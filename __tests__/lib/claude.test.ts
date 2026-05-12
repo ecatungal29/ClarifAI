@@ -37,4 +37,23 @@ describe('parseClaudeResponse', () => {
     const result = parseClaudeResponse('')
     expect(result.type).toBe('general_question')
   })
+
+  it('should extract JSON from fence even with preamble text before it', () => {
+    const raw = 'Here is the classification:\n```json\n{"type":"complaint","suggestedResponse":"Sorry.","reasoning":"Dissatisfied."}\n```'
+    const result = parseClaudeResponse(raw)
+    expect(result.type).toBe('complaint')
+    expect(result.suggestedResponse).toBe('Sorry.')
+  })
+
+  it('should return fallback when type is not a valid EnquiryType', () => {
+    const raw = JSON.stringify({ type: 'escalation', suggestedResponse: 'X', reasoning: 'Y' })
+    const result = parseClaudeResponse(raw)
+    expect(result.type).toBe('general_question')
+  })
+
+  it('should return fallback when required fields are missing', () => {
+    const raw = JSON.stringify({ type: 'complaint' })
+    const result = parseClaudeResponse(raw)
+    expect(result.type).toBe('general_question')
+  })
 })
