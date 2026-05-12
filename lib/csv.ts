@@ -1,7 +1,11 @@
 import type { EnquiryResult } from './types'
 
 export function parseCSVtoEnquiries(csv: string): string[] {
-  const lines = csv.trim().split('\n')
+  const normalised = csv
+    .replace(/^﻿/, '')       // strip UTF-8 BOM
+    .replace(/\r\n/g, '\n')       // normalize Windows line endings
+    .replace(/\r/g, '\n')         // normalize old Mac line endings
+  const lines = normalised.trim().split('\n')
   if (lines.length < 2) return []
 
   const header = lines[0].split(',').map(h => h.trim().replace(/"/g, '').toLowerCase())
@@ -23,9 +27,16 @@ function parseCSVLine(line: string): string[] {
   const result: string[] = []
   let current = ''
   let inQuotes = false
+  let i = 0
 
-  for (const char of line) {
+  while (i < line.length) {
+    const char = line[i]
     if (char === '"') {
+      if (inQuotes && line[i + 1] === '"') {
+        current += '"'
+        i += 2
+        continue
+      }
       inQuotes = !inQuotes
     } else if (char === ',' && !inQuotes) {
       result.push(current)
@@ -33,6 +44,7 @@ function parseCSVLine(line: string): string[] {
     } else {
       current += char
     }
+    i++
   }
   result.push(current)
   return result

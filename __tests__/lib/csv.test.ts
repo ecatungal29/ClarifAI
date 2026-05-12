@@ -31,6 +31,21 @@ describe('parseCSVtoEnquiries', () => {
   it('should return empty array for header-only CSV', () => {
     expect(parseCSVtoEnquiries('enquiry\n')).toEqual([])
   })
+
+  it('should handle Windows line endings (\\r\\n)', () => {
+    const csv = 'enquiry\r\nHello\r\nWorld'
+    expect(parseCSVtoEnquiries(csv)).toEqual(['Hello', 'World'])
+  })
+
+  it('should handle UTF-8 BOM from Excel exports', () => {
+    const csv = '﻿enquiry\nHello\nWorld'
+    expect(parseCSVtoEnquiries(csv)).toEqual(['Hello', 'World'])
+  })
+
+  it('should handle quoted fields with escaped double-quotes', () => {
+    const csv = 'enquiry\n"She said ""hello"""\nAnother'
+    expect(parseCSVtoEnquiries(csv)).toEqual(['She said "hello"', 'Another'])
+  })
 })
 
 describe('resultsToCSV', () => {
@@ -60,5 +75,12 @@ describe('resultsToCSV', () => {
     ]
     const row = resultsToCSV(results).split('\n')[1]
     expect(row).toContain('N/A')
+  })
+
+  it('should escape values containing double-quotes', () => {
+    const results: EnquiryResult[] = [
+      { enquiry: 'He said "help"', type: 'support_request', suggestedResponse: 'OK', reasoning: 'Test' },
+    ]
+    expect(resultsToCSV(results)).toContain('"He said ""help"""')
   })
 })
