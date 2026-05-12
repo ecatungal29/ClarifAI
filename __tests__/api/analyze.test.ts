@@ -71,5 +71,13 @@ describe('POST /api/analyze', () => {
     const data = await res.json()
     expect(res.status).toBe(200)
     expect(data.results[0].reasoning).toContain('error')
+    expect(mockClassify).toHaveBeenCalledTimes(3)
+  })
+
+  it('should return 400 when enquiries contains non-string values', async () => {
+    const res = await POST(makeRequest({ enquiries: ['Hello', 42, null] }))
+    expect(res.status).toBe(400)
+    const data = await res.json()
+    expect(data.error).toBeDefined()
   })
 })

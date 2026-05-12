@@ -18,6 +18,13 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  if (enquiries.some(e => typeof e !== 'string')) {
+    return NextResponse.json(
+      { error: 'All enquiries must be strings' },
+      { status: 400 }
+    )
+  }
+
   const results: EnquiryResult[] = []
 
   for (const enquiry of enquiries) {

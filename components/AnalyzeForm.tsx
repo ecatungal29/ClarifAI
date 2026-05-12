@@ -57,7 +57,7 @@ export default function AnalyzeForm({ onResults }: Props) {
       }
 
       const data = await res.json()
-      onResults(data.results)
+      onResults(data.results ?? [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
     } finally {
