@@ -1,7 +1,14 @@
 import Anthropic from '@anthropic-ai/sdk'
 import type { EnquiryType } from './types'
 
-const client = new Anthropic()
+let _client: Anthropic | null = null
+
+function getClient(): Anthropic {
+  if (!_client) {
+    _client = new Anthropic()
+  }
+  return _client
+}
 
 const SYSTEM_PROMPT = `You are an enquiry classification assistant for a strata management consulting firm.
 
@@ -25,7 +32,7 @@ export interface ClassifyResult {
 }
 
 export async function classifyEnquiry(enquiry: string): Promise<ClassifyResult> {
-  const message = await client.messages.create({
+  const message = await getClient().messages.create({
     model: 'claude-sonnet-4-6',
     max_tokens: 500,
     system: [
