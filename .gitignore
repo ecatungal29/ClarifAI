@@ -5,4 +5,7 @@ dist/
 .claude/
 CLAUDE.md
 .DS_Store
+.next/
+*.tsbuildinfo
 
+docs/
