@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
         const classified = await classifyEnquiry(enquiry)
         results.push({ enquiry, ...classified })
         break
-      } catch {
+      } catch (err) {
+        console.error(`[analyze] attempt ${attempt + 1} failed for enquiry: "${enquiry.slice(0, 60)}"`, err)
         attempt++
         if (attempt === 3) {
           results.push({

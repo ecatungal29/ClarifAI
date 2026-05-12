@@ -34,16 +34,10 @@ export interface ClassifyResult {
 
 export async function classifyEnquiry(enquiry: string): Promise<ClassifyResult> {
   const message = await getClient().messages.create({
-    model: 'claude-sonnet-4-6',
+    model: 'claude-haiku-4-5-20251001',
     max_tokens: 500,
     temperature: 0.7,
-    system: [
-      {
-        type: 'text' as const,
-        text: SYSTEM_PROMPT,
-        cache_control: { type: 'ephemeral' },
-      },
-    ],
+    system: SYSTEM_PROMPT,
     messages: [{ role: 'user', content: enquiry }],
   })
 
