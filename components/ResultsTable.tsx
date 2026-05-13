@@ -1,17 +1,10 @@
 import type { EnquiryResult, EnquiryType } from '@/lib/types'
 
-const TYPE_LABELS: Record<EnquiryType, string> = {
-  new_client: 'New Client',
-  support_request: 'Support Request',
-  complaint: 'Complaint',
-  general_question: 'General Question',
-}
-
-const TYPE_CLASSES: Record<EnquiryType, string> = {
-  new_client: 'bg-green-100 text-green-800',
-  support_request: 'bg-blue-100 text-blue-800',
-  complaint: 'bg-red-100 text-red-800',
-  general_question: 'bg-gray-100 text-gray-800',
+const TYPE_CONFIG: Record<EnquiryType, { label: string; dot: string; bg: string; text: string }> = {
+  new_client:       { label: 'New Client',    dot: '#6B9E78', bg: '#F0FDF4', text: '#166534' },
+  support_request:  { label: 'Support',       dot: '#4F46E5', bg: '#EEF2FF', text: '#3730A3' },
+  complaint:        { label: 'Complaint',     dot: '#DC2626', bg: '#FEF2F2', text: '#991B1B' },
+  general_question: { label: 'General',       dot: '#9CA3AF', bg: '#F9FAFB', text: '#4B5563' },
 }
 
 interface Props {
@@ -22,33 +15,46 @@ export default function ResultsTable({ results }: Props) {
   if (results.length === 0) return null
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
+    <div className="overflow-x-auto">
       <table className="w-full text-sm">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="text-left px-4 py-3 font-medium text-gray-600 border-b">Enquiry</th>
-            <th className="text-left px-4 py-3 font-medium text-gray-600 border-b w-36">Type</th>
-            <th className="text-left px-4 py-3 font-medium text-gray-600 border-b">Suggested Response</th>
-            <th className="text-left px-4 py-3 font-medium text-gray-600 border-b">Reasoning</th>
+        <thead>
+          <tr className="border-b border-[#F0EDE8]">
+            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider">Enquiry</th>
+            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider w-36">Type</th>
+            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider">Suggested Response</th>
+            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider">Reasoning</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
-          {results.map((r, i) => (
-            <tr key={i} className={r.type === null ? 'bg-red-50' : 'bg-white'}>
-              <td className="px-4 py-3 align-top max-w-xs break-words text-gray-800">{r.enquiry || '—'}</td>
-              <td className="px-4 py-3 align-top">
-                {r.type ? (
-                  <span className={`inline-block text-xs font-medium px-2 py-1 rounded-full ${TYPE_CLASSES[r.type]}`}>
-                    {TYPE_LABELS[r.type]}
-                  </span>
-                ) : (
-                  <span className="text-gray-400">—</span>
-                )}
-              </td>
-              <td className="px-4 py-3 align-top text-gray-700">{r.suggestedResponse}</td>
-              <td className="px-4 py-3 align-top text-gray-500 text-xs">{r.reasoning}</td>
-            </tr>
-          ))}
+        <tbody>
+          {results.map((r, i) => {
+            const cfg = r.type ? TYPE_CONFIG[r.type] : null
+            return (
+              <tr
+                key={i}
+                className="border-b border-[#F5F2EE] last:border-0 hover:bg-background transition-colors row-enter"
+                style={{ animationDelay: `${i * 35}ms` }}
+              >
+                <td className="px-5 py-4 align-top max-w-[220px]">
+                  <p className="text-[#374151] wrap-break-word leading-relaxed text-sm">{r.enquiry || '—'}</p>
+                </td>
+                <td className="px-5 py-4 align-top">
+                  {cfg ? (
+                    <span
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
+                      style={{ background: cfg.bg, color: cfg.text }}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: cfg.dot }} />
+                      {cfg.label}
+                    </span>
+                  ) : (
+                    <span className="text-[#9CA3AF] text-xs">—</span>
+                  )}
+                </td>
+                <td className="px-5 py-4 align-top text-[#4B5563] leading-relaxed text-sm">{r.suggestedResponse}</td>
+                <td className="px-5 py-4 align-top text-[#9CA3AF] text-xs leading-relaxed">{r.reasoning}</td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>

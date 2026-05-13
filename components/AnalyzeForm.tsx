@@ -13,6 +13,7 @@ export default function AnalyzeForm({ onResults }: Props) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [warning, setWarning] = useState<string | null>(null)
+  const [fileName, setFileName] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
 
   async function handleSubmit(e: React.FormEvent) {
@@ -66,46 +67,84 @@ export default function AnalyzeForm({ onResults }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Paste enquiries <span className="text-gray-400">(one per line)</span>
+        <label className="block text-sm font-medium text-[#374151] mb-2">
+          Paste enquiries
+          <span className="text-[#9CA3AF] font-normal ml-1">— one per line</span>
         </label>
         <textarea
           value={text}
           onChange={e => setText(e.target.value)}
-          rows={8}
-          className="w-full border border-gray-300 rounded-md p-3 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder={"Hi, we're a new company looking for consulting...\nOur site plan was approved but we need clarification...\nYour team missed the deadline and we're behind schedule."}
+          rows={7}
+          className="w-full bg-white border border-[#E5E1DA] rounded-xl p-4 font-mono text-sm text-[#374151] placeholder-[#C4BAB0] focus:outline-none focus:border-[#4F46E5]/50 focus:ring-3 focus:ring-[#4F46E5]/8 transition-all resize-none"
+          placeholder={
+            "Hi, we're a new company looking for consulting…\n" +
+            "Our site plan was approved but we need clarification…\n" +
+            'Your team missed the deadline and we\'re behind schedule.'
+          }
         />
       </div>
 
-      <div className="flex items-center gap-2">
-        <div className="flex-1 border-t border-gray-200" />
-        <span className="text-xs text-gray-400 uppercase tracking-wide">or</span>
-        <div className="flex-1 border-t border-gray-200" />
+      <div className="flex items-center gap-3">
+        <div className="flex-1 border-t border-[#E5E1DA]" />
+        <span className="text-xs text-[#C4BAB0] uppercase tracking-widest">or</span>
+        <div className="flex-1 border-t border-[#E5E1DA]" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Upload CSV <span className="text-gray-400">(must have an &quot;enquiry&quot; or &quot;message&quot; column)</span>
+        <label className="block text-sm font-medium text-[#374151] mb-2">
+          Upload CSV
+          <span className="text-[#9CA3AF] font-normal ml-1">
+            — must have an &ldquo;enquiry&rdquo; or &ldquo;message&rdquo; column
+          </span>
         </label>
-        <input ref={fileRef} type="file" accept=".csv" className="text-sm text-gray-600" />
+        <label className="flex items-center gap-3 px-4 py-3.5 border border-dashed border-[#C8C4BE] rounded-xl bg-[#FAFAF8] cursor-pointer hover:border-[#4F46E5]/40 hover:bg-[#EEF2FF]/20 transition-all group">
+          <span className="text-[#4F46E5] text-base leading-none">↑</span>
+          <span className="text-sm text-[#9CA3AF] group-hover:text-[#4F46E5] transition-colors">
+            {fileName ?? 'Choose a .csv file'}
+          </span>
+          <input
+            ref={fileRef}
+            type="file"
+            accept=".csv"
+            className="sr-only"
+            onChange={e => setFileName(e.target.files?.[0]?.name ?? null)}
+          />
+        </label>
       </div>
 
       {warning && (
-        <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-md p-2">{warning}</p>
+        <div className="flex gap-2.5 text-sm text-[#92400E] bg-[#FFFBEB] border border-[#FDE68A] rounded-lg p-3.5">
+          <span className="shrink-0 mt-0.5">⚠</span>
+          <p>{warning}</p>
+        </div>
       )}
+
       {error && (
-        <p className="text-sm text-red-700 bg-red-50 border border-red-200 rounded-md p-2">{error}</p>
+        <div className="flex gap-2.5 text-sm text-[#991B1B] bg-[#FEF2F2] border border-[#FECACA] rounded-lg p-3.5">
+          <span className="shrink-0 mt-0.5">✕</span>
+          <p>{error}</p>
+        </div>
       )}
 
       <button
         type="submit"
         disabled={loading}
-        className="bg-blue-600 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        className={`px-6 py-2.5 rounded-lg text-sm font-semibold text-white transition-all disabled:cursor-not-allowed ${
+          loading
+            ? 'btn-loading opacity-90'
+            : 'bg-[#3730A3] hover:bg-[#4338CA] active:scale-[0.98] shadow-sm shadow-[#3730A3]/20'
+        }`}
       >
-        {loading ? 'Analyzing…' : 'Analyze Enquiries'}
+        {loading ? (
+          <span className="flex items-center gap-2">
+            <span className="inline-block w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            Analyzing…
+          </span>
+        ) : (
+          'Analyze Enquiries'
+        )}
       </button>
     </form>
   )

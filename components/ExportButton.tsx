@@ -26,8 +26,9 @@ export default function ExportButton({ results }: Props) {
   return (
     <button
       onClick={handleExport}
-      className="border border-gray-300 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-50"
+      className="flex items-center gap-2 border border-[#3730A3]/25 text-[#3730A3] px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#EEF2FF] hover:border-[#3730A3]/50 active:scale-[0.98] transition-all"
     >
+      <span className="text-base leading-none">↓</span>
       Export CSV
     </button>
   )

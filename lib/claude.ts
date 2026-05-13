@@ -21,7 +21,7 @@ Classify the given client enquiry into exactly one of these types:
 Respond with ONLY valid JSON in this exact format — no other text, no markdown fences, no explanation:
 {
   "type": "new_client",
-  "suggestedResponse": "A professional, warm response for the staff member to send or adapt",
+  "suggestedResponse": "A professional, warm email-style response beginning with 'Hi [Name],' — extract the sender's first name from the enquiry if present, otherwise use 'Hi there,'. Write as if it will be sent directly by a staff member.",
   "reasoning": "One or two sentences explaining why this classification was chosen"
 }
 (type must be exactly one of: new_client, support_request, complaint, general_question)`
