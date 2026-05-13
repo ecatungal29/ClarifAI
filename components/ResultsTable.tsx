@@ -19,10 +19,10 @@ export default function ResultsTable({ results }: Props) {
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-[#2a3650]">
-            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Enquiry</th>
-            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest w-36">Type</th>
-            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Suggested Response</th>
-            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Reasoning</th>
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest w-[18%]">Enquiry</th>
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest w-[12%]">Type</th>
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest w-[42%]">Suggested Response</th>
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest w-[28%]">Reasoning</th>
           </tr>
         </thead>
         <tbody>
@@ -37,14 +37,14 @@ export default function ResultsTable({ results }: Props) {
                   animationDelay: `${i * 35}ms`,
                 }}
               >
-                <td className="px-5 py-4 align-top max-w-[220px]">
+                <td className="px-5 py-4 align-top">
                   <p className="text-[#F1F5F9] break-words leading-relaxed text-sm">{r.enquiry || '—'}</p>
                 </td>
                 <td className="px-5 py-4 align-top">
                   <div className="flex flex-col gap-1.5">
                     {cfg ? (
                       <span
-                        className="inline-flex items-center text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
+                        className="inline-flex justify-center items-end text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
                         style={{ background: cfg.bg, color: cfg.text }}
                       >
                         {cfg.label}

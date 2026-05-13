@@ -9,3 +9,8 @@ CLAUDE.md
 *.tsbuildinfo
 
 docs/
+
+# Playwright & test artifacts
+.playwright-mcp/
+*.png
+clarifai_analyze_enquiries_dark.html
