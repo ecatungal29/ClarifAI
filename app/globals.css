@@ -1,29 +1,35 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #FAFAF8;
-  --color-foreground: #1F1F1F;
+  --color-background: #0F1629;
+  --color-foreground: #F1F5F9;
   --font-sans: var(--font-dm-sans), system-ui, sans-serif;
   --font-mono: ui-monospace, 'JetBrains Mono', monospace;
 }
 
 body {
-  background: #FAFAF8;
-  color: #1F1F1F;
+  background: #0F1629;
+  color: #F1F5F9;
   font-family: var(--font-dm-sans), system-ui, sans-serif;
 }
 
 .display-heading {
-  font-family: var(--font-instrument-serif), Georgia, 'Times New Roman', serif;
-  font-style: italic;
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-style: normal;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(229, 225, 218, 0.9);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 20px rgba(0, 0, 0, 0.05);
+  background: #1a2236;
+  border: 1px solid #2a3650;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0px rgba(217, 119, 6, 0);
   border-radius: 14px;
+  transition: box-shadow 0.2s ease;
+}
+
+.glass-card:focus-within {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(217, 119, 6, 0.3);
 }
 
 @keyframes fadeSlideIn {
@@ -41,13 +47,14 @@ body {
   animation: fadeSlideIn 0.25s ease-out both;
 }
 
-@keyframes shimmer {
+@keyframes goldShimmer {
   from { background-position: -200% center; }
   to   { background-position:  200% center; }
 }
 
 .btn-loading {
-  background: linear-gradient(90deg, #3730A3 0%, #4F46E5 50%, #3730A3 100%);
+  background: linear-gradient(90deg, #B45309 0%, #D97706 40%, #F59E0B 60%, #B45309 100%);
   background-size: 200% auto;
-  animation: shimmer 1.4s linear infinite;
+  animation: goldShimmer 1.4s linear infinite;
+  color: #1a2236;
 }

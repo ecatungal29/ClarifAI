@@ -1,10 +1,10 @@
 import type { EnquiryResult, EnquiryType } from '@/lib/types'
 
-const TYPE_CONFIG: Record<EnquiryType, { label: string; dot: string; bg: string; text: string }> = {
-  new_client:       { label: 'New Client',    dot: '#6B9E78', bg: '#F0FDF4', text: '#166534' },
-  support_request:  { label: 'Support',       dot: '#4F46E5', bg: '#EEF2FF', text: '#3730A3' },
-  complaint:        { label: 'Complaint',     dot: '#DC2626', bg: '#FEF2F2', text: '#991B1B' },
-  general_question: { label: 'General',       dot: '#9CA3AF', bg: '#F9FAFB', text: '#4B5563' },
+const TYPE_CONFIG: Record<EnquiryType, { label: string; bg: string; text: string }> = {
+  new_client:       { label: 'New Client',  bg: '#166534', text: '#86EFAC' },
+  support_request:  { label: 'Support',     bg: '#312E81', text: '#A5B4FC' },
+  complaint:        { label: 'Complaint',   bg: '#7F1D1D', text: '#FCA5A5' },
+  general_question: { label: 'General',     bg: '#1E293B', text: '#94A3B8' },
 }
 
 interface Props {
@@ -18,11 +18,11 @@ export default function ResultsTable({ results }: Props) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[#F0EDE8]">
-            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider">Enquiry</th>
-            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider w-36">Type</th>
-            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider">Suggested Response</th>
-            <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#B0ABA4] uppercase tracking-wider">Reasoning</th>
+          <tr className="border-b border-[#2a3650]">
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Enquiry</th>
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest w-36">Type</th>
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Suggested Response</th>
+            <th scope="col" className="text-left px-5 py-3.5 text-[10px] font-bold text-[#94A3B8] uppercase tracking-widest">Reasoning</th>
           </tr>
         </thead>
         <tbody>
@@ -31,27 +31,36 @@ export default function ResultsTable({ results }: Props) {
             return (
               <tr
                 key={i}
-                className="border-b border-[#F5F2EE] last:border-0 hover:bg-background transition-colors row-enter"
-                style={{ animationDelay: `${i * 35}ms` }}
+                className="border-b last:border-0 hover:bg-white/[0.03] transition-colors row-enter"
+                style={{
+                  borderColor: 'rgba(255,255,255,0.06)',
+                  animationDelay: `${i * 35}ms`,
+                }}
               >
                 <td className="px-5 py-4 align-top max-w-[220px]">
-                  <p className="text-[#374151] wrap-break-word leading-relaxed text-sm">{r.enquiry || '—'}</p>
+                  <p className="text-[#F1F5F9] break-words leading-relaxed text-sm">{r.enquiry || '—'}</p>
                 </td>
                 <td className="px-5 py-4 align-top">
-                  {cfg ? (
-                    <span
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
-                      style={{ background: cfg.bg, color: cfg.text }}
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: cfg.dot }} />
-                      {cfg.label}
-                    </span>
-                  ) : (
-                    <span className="text-[#9CA3AF] text-xs">—</span>
-                  )}
+                  <div className="flex flex-col gap-1.5">
+                    {cfg ? (
+                      <span
+                        className="inline-flex items-center text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
+                        style={{ background: cfg.bg, color: cfg.text }}
+                      >
+                        {cfg.label}
+                      </span>
+                    ) : (
+                      <span className="text-[#475569] text-xs">—</span>
+                    )}
+                    {r.requiresHumanReview && (
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap bg-[#D97706]/15 text-[#FCD34D] border border-[#D97706]/30">
+                        ⚠ Review
+                      </span>
+                    )}
+                  </div>
                 </td>
-                <td className="px-5 py-4 align-top text-[#4B5563] leading-relaxed text-sm">{r.suggestedResponse}</td>
-                <td className="px-5 py-4 align-top text-[#9CA3AF] text-xs leading-relaxed">{r.reasoning}</td>
+                <td className="px-5 py-4 align-top text-[#E2E8F0] leading-relaxed text-sm">{r.suggestedResponse}</td>
+                <td className="px-5 py-4 align-top text-[#CBD5E1] text-xs leading-relaxed break-words">{r.reasoning}</td>
               </tr>
             )
           })}

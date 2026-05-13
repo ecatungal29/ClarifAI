@@ -3,8 +3,10 @@ export type EnquiryType = 'new_client' | 'support_request' | 'complaint' | 'gene
 export interface EnquiryResult {
   enquiry: string
   type: EnquiryType | null
+  confidence: number
   suggestedResponse: string
   reasoning: string
+  requiresHumanReview: boolean
 }
 
 export interface AnalyzeRequest {

@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
   for (const enquiry of enquiries) {
     if (!enquiry.trim()) {
-      results.push({ enquiry, type: null, suggestedResponse: 'N/A', reasoning: '' })
+      results.push({ enquiry, type: null, confidence: 0, suggestedResponse: 'N/A', reasoning: '', requiresHumanReview: true })
       continue
     }
 
@@ -46,8 +46,10 @@ export async function POST(request: NextRequest) {
           results.push({
             enquiry,
             type: 'general_question',
-            suggestedResponse: 'Unable to generate response due to an error.',
+            confidence: 0,
+            suggestedResponse: '',
             reasoning: 'API error after retries',
+            requiresHumanReview: true,
           })
         } else {
           await new Promise(r => setTimeout(r, Math.pow(2, attempt - 1) * 500))

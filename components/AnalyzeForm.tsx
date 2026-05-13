@@ -69,43 +69,54 @@ export default function AnalyzeForm({ onResults }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-sm font-medium text-[#374151] mb-2">
+        <label
+          htmlFor="enquiries-textarea"
+          className="block text-xs font-bold text-[#94A3B8] uppercase tracking-widest mb-2"
+        >
           Paste enquiries
-          <span className="text-[#9CA3AF] font-normal ml-1">— one per line</span>
+          <span className="text-[#475569] font-normal normal-case tracking-normal ml-1">— one per line</span>
         </label>
         <textarea
+          id="enquiries-textarea"
           value={text}
           onChange={e => setText(e.target.value)}
           rows={7}
-          className="w-full bg-white border border-[#E5E1DA] rounded-xl p-4 font-mono text-sm text-[#374151] placeholder-[#C4BAB0] focus:outline-none focus:border-[#4F46E5]/50 focus:ring-3 focus:ring-[#4F46E5]/8 transition-all resize-none"
+          className="w-full bg-[#0F1629] border border-[#2a3650] rounded-xl p-4 font-mono text-sm text-[#E2E8F0] placeholder-[#334155] focus:outline-none focus:border-[#D97706]/60 focus:ring-2 focus:ring-[#D97706]/20 transition-all resize-none"
           placeholder={
             "Hi, we're a new company looking for consulting…\n" +
             "Our site plan was approved but we need clarification…\n" +
-            'Your team missed the deadline and we\'re behind schedule.'
+            "Your team missed the deadline and we're behind schedule."
           }
         />
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="flex-1 border-t border-[#E5E1DA]" />
-        <span className="text-xs text-[#C4BAB0] uppercase tracking-widest">or</span>
-        <div className="flex-1 border-t border-[#E5E1DA]" />
+        <div className="flex-1 border-t border-[#1e2f47]" />
+        <span className="text-xs text-[#334155] uppercase tracking-widest">or</span>
+        <div className="flex-1 border-t border-[#1e2f47]" />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-[#374151] mb-2">
+        <label
+          htmlFor="csv-upload"
+          className="block text-xs font-bold text-[#94A3B8] uppercase tracking-widest mb-2"
+        >
           Upload CSV
-          <span className="text-[#9CA3AF] font-normal ml-1">
+          <span className="text-[#475569] font-normal normal-case tracking-normal ml-1">
             — must have an &ldquo;enquiry&rdquo; or &ldquo;message&rdquo; column
           </span>
         </label>
-        <label className="flex items-center gap-3 px-4 py-3.5 border border-dashed border-[#C8C4BE] rounded-xl bg-[#FAFAF8] cursor-pointer hover:border-[#4F46E5]/40 hover:bg-[#EEF2FF]/20 transition-all group">
-          <span className="text-[#4F46E5] text-base leading-none">↑</span>
-          <span className="text-sm text-[#9CA3AF] group-hover:text-[#4F46E5] transition-colors">
+        <label
+          htmlFor="csv-upload"
+          className="flex items-center gap-3 px-4 py-3.5 border border-dashed border-[#2a3650] rounded-xl bg-[#0F1629] cursor-pointer hover:border-[#D97706]/40 hover:bg-[#D97706]/5 transition-all group"
+        >
+          <span className="text-[#D97706] text-base leading-none">↑</span>
+          <span className="text-sm text-[#475569] group-hover:text-[#F59E0B] transition-colors">
             {fileName ?? 'Choose a .csv file'}
           </span>
           <input
             ref={fileRef}
+            id="csv-upload"
             type="file"
             accept=".csv"
             className="sr-only"
@@ -115,14 +126,20 @@ export default function AnalyzeForm({ onResults }: Props) {
       </div>
 
       {warning && (
-        <div className="flex gap-2.5 text-sm text-[#92400E] bg-[#FFFBEB] border border-[#FDE68A] rounded-lg p-3.5">
+        <div
+          role="alert"
+          className="flex gap-2.5 text-sm text-[#FCD34D] bg-[#D97706]/10 border border-[#D97706]/30 rounded-lg p-3.5"
+        >
           <span className="shrink-0 mt-0.5">⚠</span>
           <p>{warning}</p>
         </div>
       )}
 
       {error && (
-        <div className="flex gap-2.5 text-sm text-[#991B1B] bg-[#FEF2F2] border border-[#FECACA] rounded-lg p-3.5">
+        <div
+          role="alert"
+          className="flex gap-2.5 text-sm text-[#FCA5A5] bg-[#EF4444]/10 border border-[#EF4444]/30 rounded-lg p-3.5"
+        >
           <span className="shrink-0 mt-0.5">✕</span>
           <p>{error}</p>
         </div>
@@ -131,15 +148,15 @@ export default function AnalyzeForm({ onResults }: Props) {
       <button
         type="submit"
         disabled={loading}
-        className={`px-6 py-2.5 rounded-lg text-sm font-semibold text-white transition-all disabled:cursor-not-allowed ${
+        className={`px-6 py-2.5 rounded-lg text-sm font-bold uppercase tracking-widest transition-all disabled:cursor-not-allowed ${
           loading
-            ? 'btn-loading opacity-90'
-            : 'bg-[#3730A3] hover:bg-[#4338CA] active:scale-[0.98] shadow-sm shadow-[#3730A3]/20'
+            ? 'btn-loading text-[#1a2236] opacity-95'
+            : 'bg-[#D97706] text-[#0F1629] hover:bg-[#F59E0B] active:scale-[0.98] shadow-lg shadow-[#D97706]/25 hover:shadow-[#F59E0B]/30'
         }`}
       >
         {loading ? (
           <span className="flex items-center gap-2">
-            <span className="inline-block w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <span className="inline-block w-3.5 h-3.5 border-2 border-[#1a2236]/30 border-t-[#1a2236] rounded-full animate-spin" />
             Analyzing…
           </span>
         ) : (
