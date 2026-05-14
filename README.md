@@ -35,6 +35,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 **Export** — once results appear, click *Export CSV* to download a spreadsheet with all classifications, suggested responses, and reasoning.
 
+**Filter by type** — after results load, a filter bar appears above the table. Click any type badge (New Client, Support, Complaint, General) to narrow the view. A count badge shows how many results match each type.
+
 ---
 
 ## Prompt design
@@ -64,7 +66,9 @@ Respond with ONLY valid JSON in this exact format — no other text, no markdown
 - **Reasoning field.** Staff can see *why* a message was classified a certain way, which builds trust and lets them catch misclassifications quickly rather than blindly acting on the AI's output.
 - **Personalised responses.** The prompt instructs Claude to extract the sender's first name from the enquiry if present and open with `Hi [Name],` — making the suggested reply feel less templated.
 - **Strict type enumeration.** The four types are defined in the prompt and enforced in code. If Claude returns an unexpected value the response is rejected and falls back gracefully (see error handling below).
-- **Model:** `claude-haiku-4-5-20251001` — fast and cost-efficient for classification tasks. Temperature 0.7 balances creativity in response drafting with consistency in classification.
+- **Confidence score.** Claude returns a `confidence` value between 0 and 1 alongside each classification. The code clamps this to `[0, 1]`. Any result with confidence below 0.85 is automatically flagged `requiresHumanReview: true` and shown with a ⚠ Review badge in the UI.
+- **Input sanitisation.** Each enquiry is cleaned before being sent to the API: HTML tags are stripped, whitespace is normalised, standard email footers (confidentiality notices) are removed, and the text is capped at 8,000 characters.
+- **Model:** `claude-haiku-4-5-20251001` — fast and cost-efficient for classification tasks. Temperature 0.1 keeps classification consistent. Max tokens is capped at 350.
 
 ---
 
@@ -104,6 +108,8 @@ curl -X POST http://localhost:3000/api/analyze \
   -H "Content-Type: application/json" \
   -d '{"enquiries": ["Hi, we need a new strata manager for our building."]}'
 ```
+
+The response includes `confidence` (0–1) and `requiresHumanReview` (boolean) per result in addition to `type`, `suggestedResponse`, and `reasoning`.
 
 Example integrations:
 
